@@ -10,9 +10,9 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area is initialized properly`() {
         val venue = "stadium"
-        val vehicleConfig = mapOf<String,Int>()
+        val vehicleConfig = mapOf<String, Int>()
 
-        val parkingArea = ParkingArea(venue,vehicleConfig)
+        val parkingArea = ParkingArea(venue, vehicleConfig)
 
         assertEquals(venue, parkingArea.venue)
     }
@@ -34,7 +34,7 @@ class ParkingAreaTest {
         val vehicleConfig = mutableMapOf("Motorcycles" to 2, "Cars" to 0)
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        assertDoesNotThrow{
+        assertDoesNotThrow {
             parkingArea.park("Motorcycles")
         }
     }
@@ -46,7 +46,7 @@ class ParkingAreaTest {
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        assertThrows<Exception>{
+        assertThrows<Exception> {
             parkingArea.park("Cars")
         }
     }
@@ -58,10 +58,10 @@ class ParkingAreaTest {
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        assertDoesNotThrow{parkingArea.park("Motorcycles")}
-        assertDoesNotThrow{parkingArea.park("Motorcycles")}
-        assertDoesNotThrow{parkingArea.park("Motorcycles")}
-        assertThrows<Exception>{parkingArea.park("Motorcycles")}
+        assertDoesNotThrow { parkingArea.park("Motorcycles") }
+        assertDoesNotThrow { parkingArea.park("Motorcycles") }
+        assertDoesNotThrow { parkingArea.park("Motorcycles") }
+        assertThrows<Exception> { parkingArea.park("Motorcycles") }
     }
 
 }
