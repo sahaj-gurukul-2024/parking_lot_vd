@@ -24,14 +24,18 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
 
     fun park(vehicleType: String): ParkingTicket {
         val slotId = checkAvailability(vehicleType)
+        updateSpot(slotId, vehicleType)
+
+        return ParkingTicket(ticketId, slotId, LocalDateTime.now())
+    }
+
+    private fun updateSpot(slotId: Int, vehicleType: String) {
         if (slotId != 0) {
             slots[vehicleType]!![slotId - 1].isOccupied = true
             ticketId++
         } else {
             throw Exception("Slot not available")
         }
-
-        return ParkingTicket(ticketId, slotId, LocalDateTime.now())
     }
 
 }
