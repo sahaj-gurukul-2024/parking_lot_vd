@@ -2,21 +2,22 @@ package org.example
 
 class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     fun park(vehicleType:String) {
-        if(checkAvailability(vehicleType)){
-
+        val slotId = checkAvailability(vehicleType)
+        if(slotId != 0){
+            slots[vehicleType]!![slotId-1].isOccupied = true
         }
         else{
             throw Exception("Slot not available")
         }
     }
 
-    private fun checkAvailability(vehicleType: String): Boolean {
+    private fun checkAvailability(vehicleType: String): Int {
         for(slot in slots[vehicleType]!!){
             if(!slot.isOccupied){
-                return true
+                return slot.id
             }
         }
-        return false
+        return 0
     }
 
     val slots: MutableMap<String,List<Slot>> = mutableMapOf()
