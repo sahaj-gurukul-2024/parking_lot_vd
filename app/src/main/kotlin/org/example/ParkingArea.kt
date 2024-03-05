@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     val slots: MutableMap<String, List<Slot>> = mutableMapOf()
-
+    var ticketId:Int =0
     init {
         for ((vehicleType, slotCount) in vehicleConfig) {
             slots[vehicleType] = List(slotCount) {
@@ -26,11 +26,12 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         val slotId = checkAvailability(vehicleType)
         if (slotId != 0) {
             slots[vehicleType]!![slotId - 1].isOccupied = true
+            ticketId++
         } else {
             throw Exception("Slot not available")
         }
 
-        return ParkingTicket(1, slotId, LocalDateTime.now())
+        return ParkingTicket(ticketId, slotId, LocalDateTime.now())
     }
 
 }

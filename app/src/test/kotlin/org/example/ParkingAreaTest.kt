@@ -3,9 +3,6 @@ package org.example
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 import kotlin.test.assertEquals
 
 class ParkingAreaTest {
@@ -78,6 +75,23 @@ class ParkingAreaTest {
 
         val ticketId = 1
         val parkingSlotId = 1
+
+        assertEquals(ticketId, parkingTicket.id)
+        assertEquals(parkingSlotId, parkingTicket.slotId)
+    }
+
+    @Test
+    fun `Parking Area should generate proper ticket id`(){
+        val venue = "stadium"
+        val vehicleConfig = mutableMapOf("Motorcycles" to 3)
+
+        val parkingArea = ParkingArea(venue, vehicleConfig)
+
+        parkingArea.park("Motorcycles")
+        val parkingTicket = parkingArea.park("Motorcycles")
+
+        val ticketId = 2
+        val parkingSlotId = 2
 
         assertEquals(ticketId, parkingTicket.id)
         assertEquals(parkingSlotId, parkingTicket.slotId)
