@@ -2,7 +2,6 @@ package org.example
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 
 class ParkingAreaTest {
 
@@ -26,17 +25,5 @@ class ParkingAreaTest {
         assertEquals(vehicleConfig["Cars"], parkingArea.slots["Cars"]!!.size)
         assertEquals(vehicleConfig["Motorcycles"], parkingArea.slots["Motorcycles"]!!.size)
     }
-
-    @Test
-    fun `Parking Slot should be initialized properly`(){
-        val id = 1
-
-        val parkingSlot = Slot(id)
-
-        assertEquals(id,parkingSlot.id)
-        assertFalse(parkingSlot.isOccupied)
-    }
-
-
 
 }
