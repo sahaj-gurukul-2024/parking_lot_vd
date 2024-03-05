@@ -22,14 +22,9 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     val slots: MutableMap<String,List<Slot>> = mutableMapOf()
     init {
         for((vehicleType, slotCount) in vehicleConfig){
-
-            val temp = mutableListOf<Slot>()
-            for(i in 0 until slotCount){
-
-                temp.add(Slot(i+1))
+            slots[vehicleType] = List(slotCount) {
+                Slot(it+1)
             }
-
-            slots[vehicleType] = temp
         }
     }
 }
