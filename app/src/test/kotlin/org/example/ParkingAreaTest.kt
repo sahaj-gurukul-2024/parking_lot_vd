@@ -31,7 +31,7 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should allow vehicle if slot available`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 2, "Cars" to 0)
+        val vehicleConfig = mutableMapOf("Motorcycles" to 2)
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
         assertDoesNotThrow {
@@ -42,7 +42,7 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should not allow vehicle if slot not available`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 2, "Cars" to 0)
+        val vehicleConfig = mutableMapOf("Cars" to 0)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
@@ -54,7 +54,7 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should update spot once a vehicle is parked`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 3, "Cars" to 0)
+        val vehicleConfig = mutableMapOf("Motorcycles" to 3)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
