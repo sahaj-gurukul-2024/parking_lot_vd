@@ -1,5 +1,7 @@
 package org.example
 
+import java.time.LocalDateTime
+
 class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     val slots: MutableMap<String, List<Slot>> = mutableMapOf()
 
@@ -20,13 +22,15 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         return 0
     }
 
-    fun park(vehicleType: String) {
+    fun park(vehicleType: String): ParkingTicket {
         val slotId = checkAvailability(vehicleType)
         if (slotId != 0) {
             slots[vehicleType]!![slotId - 1].isOccupied = true
         } else {
             throw Exception("Slot not available")
         }
+
+        return ParkingTicket(1, slotId, LocalDateTime.now())
     }
 
 }
