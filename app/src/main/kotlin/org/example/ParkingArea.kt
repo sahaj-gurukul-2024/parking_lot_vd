@@ -1,8 +1,8 @@
 package org.example
 
 class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
-    fun park(type:String) {
-        if(checkAvailability(type)){
+    fun park(vehicleType:String) {
+        if(checkAvailability(vehicleType)){
 
         }
         else{
@@ -10,9 +10,9 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         }
     }
 
-    private fun checkAvailability(type: String): Boolean {
-        for(every in slots[type]!!){
-            if(!every.isOccupied){
+    private fun checkAvailability(vehicleType: String): Boolean {
+        for(slot in slots[vehicleType]!!){
+            if(!slot.isOccupied){
                 return true
             }
         }
@@ -21,15 +21,15 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
 
     val slots: MutableMap<String,List<Slot>> = mutableMapOf()
     init {
-        for((key,value) in vehicleConfig){
+        for((vehicleType, slotCount) in vehicleConfig){
 
             val temp = mutableListOf<Slot>()
-            for(i in 0 until value){
+            for(i in 0 until slotCount){
 
                 temp.add(Slot(i+1))
             }
 
-            slots[key] = temp
+            slots[vehicleType] = temp
         }
     }
 }
