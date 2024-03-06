@@ -1,17 +1,17 @@
 package org.example.feeModels
 
+import org.example.VehicleType
 import java.time.Duration
-import java.time.LocalDateTime
 import kotlin.math.ceil
 
 class Mall : FeeModel() {
     private val feeStructure = mapOf(
-        "Motorcycle" to 10,
-        "Car" to 20,
-        "Bus" to 50
+        VehicleType.MOTORCYCLE to 10,
+        VehicleType.CAR to 20,
+        VehicleType.BUS to 50
     )
 
-    override fun calculateFee(duration: Duration, vehicleType: String): Double {
+    override fun calculateFee(duration: Duration, vehicleType: VehicleType): Double {
         val parkingMinutes = duration.toMinutes()
         return feeStructure[vehicleType]!! * (ceil(parkingMinutes/60.0))
     }

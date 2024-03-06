@@ -5,17 +5,15 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.Month
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.time.ExperimentalTime
 class ParkingAreaTest {
 
     @Test
     fun `Parking Area is initialized properly`() {
         val venue = "stadium"
-        val vehicleConfig = mapOf<String, Int>()
+        val vehicleConfig = mapOf<VehicleType, Int>()
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
@@ -25,58 +23,58 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should have correct slot numbers `() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 2, "Cars" to 0)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 2, VehicleType.CAR to 0)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        assertEquals(vehicleConfig["Cars"], parkingArea.slots["Cars"]!!.size)
-        assertEquals(vehicleConfig["Motorcycles"], parkingArea.slots["Motorcycles"]!!.size)
+        assertEquals(vehicleConfig[VehicleType.CAR], parkingArea.slots[VehicleType.CAR]!!.size)
+        assertEquals(vehicleConfig[VehicleType.MOTORCYCLE], parkingArea.slots[VehicleType.MOTORCYCLE]!!.size)
     }
 
     @Test
     fun `Parking Area should allow vehicle if slot available`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 2)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 2)
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
         assertDoesNotThrow {
-            parkingArea.park("Motorcycles")
+            parkingArea.park(VehicleType.MOTORCYCLE)
         }
     }
 
     @Test
     fun `Parking Area should not allow vehicle if slot not available`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Cars" to 0)
+        val vehicleConfig = mutableMapOf(VehicleType.CAR to 0)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
         assertThrows<Exception> {
-            parkingArea.park("Cars")
+            parkingArea.park(VehicleType.CAR)
         }
     }
 
     @Test
     fun `Parking Area should update spot once a vehicle is parked`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 3)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        assertDoesNotThrow { parkingArea.park("Motorcycles") }
-        assertDoesNotThrow { parkingArea.park("Motorcycles") }
-        assertDoesNotThrow { parkingArea.park("Motorcycles") }
-        assertThrows<Exception> { parkingArea.park("Motorcycles") }
+        assertDoesNotThrow { parkingArea.park(VehicleType.MOTORCYCLE) }
+        assertDoesNotThrow { parkingArea.park(VehicleType.MOTORCYCLE) }
+        assertDoesNotThrow { parkingArea.park(VehicleType.MOTORCYCLE) }
+        assertThrows<Exception> { parkingArea.park(VehicleType.MOTORCYCLE) }
     }
 
     @Test
     fun `Parking Area should generate ticket properly`(){
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 3)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        val parkingTicket = parkingArea.park("Motorcycles")
+        val parkingTicket = parkingArea.park(VehicleType.MOTORCYCLE)
 
         val ticketId = 1
         val parkingSlotId = 1
@@ -88,12 +86,12 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should generate proper ticket id`(){
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 3)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
 
-        parkingArea.park("Motorcycles")
-        val parkingTicket = parkingArea.park("Motorcycles")
+        parkingArea.park(VehicleType.MOTORCYCLE)
+        val parkingTicket = parkingArea.park(VehicleType.MOTORCYCLE)
 
         val ticketId = 2
         val parkingSlotId = 2
@@ -105,23 +103,23 @@ class ParkingAreaTest {
     @Test
     fun `Parking Area should update spot once a vehicle is unparked`() {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
-        val ticket = parkingArea.park("Motorcycles")
-        parkingArea.unPark(ticket,"Motorcycles")
+        val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
+        parkingArea.unPark(ticket,VehicleType.MOTORCYCLE)
 
-        assertFalse(parkingArea.slots["Motorcycles"]!!.get(0).isOccupied)
+        assertFalse(parkingArea.slots[VehicleType.MOTORCYCLE]!![0].isOccupied)
     }
 
     @Test
     fun `Parking Area should generate receipt`(){
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
-        val ticket = parkingArea.park("Motorcycles")
-        val receipt = parkingArea.unPark(ticket,"Motorcycles")
+        val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
+        val receipt = parkingArea.unPark(ticket,VehicleType.MOTORCYCLE)
         assertTrue(receipt is ParkingReceipt)
 
     }
@@ -129,7 +127,7 @@ class ParkingAreaTest {
     fun `Parking area should have current dateTime as entry time`()
     {
         val venue = "stadium"
-        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
         val currentTime = LocalDateTime.now()

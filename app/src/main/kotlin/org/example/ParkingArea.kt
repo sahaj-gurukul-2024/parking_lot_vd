@@ -3,8 +3,8 @@ package org.example
 import java.time.Duration
 import java.time.LocalDateTime
 
-class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
-    val slots: MutableMap<String, List<Slot>> = mutableMapOf()
+class ParkingArea(internal val venue: String, vehicleConfig: Map<VehicleType, Int>) {
+    val slots: MutableMap<VehicleType, List<Slot>> = mutableMapOf()
     var ticketId:Int =0
     init {
         for ((vehicleType, slotCount) in vehicleConfig) {
@@ -14,7 +14,7 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         }
     }
 
-    private fun checkAvailability(vehicleType: String): Int {
+    private fun checkAvailability(vehicleType: VehicleType): Int {
         for (slot in slots[vehicleType]!!) {
             if (!slot.isOccupied) {
                 return slot.id
@@ -23,7 +23,7 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         return 0
     }
 
-    fun park(vehicleType: String): ParkingTicket {
+    fun park(vehicleType: VehicleType): ParkingTicket {
         val slotId = checkAvailability(vehicleType)
         updateSpot(slotId, vehicleType)
         val entryTime = getEntryTime()
@@ -35,7 +35,7 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     }
 
 
-    private fun updateSpot(slotId: Int, vehicleType: String) {
+    private fun updateSpot(slotId: Int, vehicleType: VehicleType) {
         if (slotId != 0) {
             slots[vehicleType]!![slotId - 1].isOccupied = true
             ticketId++
@@ -44,7 +44,7 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         }
     }
 
-    fun unPark(ticket: ParkingTicket,vehicleType: String) : ParkingReceipt{
+    fun unPark(ticket: ParkingTicket,vehicleType: VehicleType) : ParkingReceipt{
         for(slot in slots[vehicleType]!!){
             if(slot.id==ticket.slotId){
                 slot.isOccupied= false

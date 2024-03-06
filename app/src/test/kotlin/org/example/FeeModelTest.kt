@@ -23,9 +23,8 @@ class FeeModelTest {
 
         val feeModelMall = feeModelFactory.getFeeModel("Mall")
         val duration = Duration.ofHours(2)+ Duration.ofMinutes(30)
-        val vehicleType = "Car"
 
-        val fee = feeModelMall?.calculateFee(duration,vehicleType)
+        val fee = feeModelMall?.calculateFee(duration,VehicleType.CAR)
 
         assertEquals(60.0,fee)
 
@@ -39,9 +38,8 @@ class FeeModelTest {
         val feeModelMall = feeModelFactory.getFeeModel("Stadium")
         val duration = Duration.ofHours(14) + Duration.ofMinutes(30)
         println(duration.toMinutes())
-        val vehicleType = "Car"
 
-        val fee = feeModelMall?.calculateFee(duration,vehicleType)
+        val fee = feeModelMall?.calculateFee(duration,VehicleType.CAR)
 
         assertEquals(1800.0,fee)
 
