@@ -5,7 +5,8 @@ import java.time.LocalDateTime
 
 class ParkingArea(internal val venue: String, vehicleConfig: Map<VehicleType, Int>) {
     val slots: MutableMap<VehicleType, List<Slot>> = mutableMapOf()
-    var ticketId:Int =0
+    private var ticketId: Int = 0
+
     init {
         for ((vehicleType, slotCount) in vehicleConfig) {
             slots[vehicleType] = List(slotCount) {
@@ -44,17 +45,16 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<VehicleType, In
         }
     }
 
-    fun unPark(ticket: ParkingTicket,vehicleType: VehicleType) : ParkingReceipt{
-        for(slot in slots[vehicleType]!!){
-            if(slot.id==ticket.slotId){
-                slot.isOccupied= false
+    fun unPark(ticket: ParkingTicket, vehicleType: VehicleType): ParkingReceipt {
+        for (slot in slots[vehicleType]!!) {
+            if (slot.id == ticket.slotId) {
+                slot.isOccupied = false
             }
         }
-
         return ParkingReceipt(ticket.entryDateTime, LocalDateTime.now())
     }
 
-    private fun calculateDuration(entryTime: LocalDateTime,exitTime : LocalDateTime): Duration? {
-        return Duration.between(exitTime,entryTime)
+    private fun calculateDuration(entryTime: LocalDateTime, exitTime: LocalDateTime): Duration? {
+        return Duration.between(exitTime, entryTime)
     }
 }

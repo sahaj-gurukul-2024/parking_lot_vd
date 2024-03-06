@@ -1,5 +1,6 @@
 package org.example
 
+import org.example.exceptions.ParkingException
 import org.example.feeModels.Rate
 import org.junit.jupiter.api.Test
 import java.time.Duration
@@ -41,8 +42,8 @@ class FeeModelTest {
             )
         )
 
-        val feeModelMall = feeModelFactory.getFeeModel(Venue.STADIUM)
-        feeModelMall!!.setConfiguration(mallConfiguration)
+        val feeModelMall = feeModelFactory.getFeeModel(Venue.STADIUM) ?: throw ParkingException("Fee model is unavailable")
+        feeModelMall.setConfiguration(mallConfiguration)
         val duration = Duration.ofHours(14) + Duration.ofMinutes(30)
         val fee = feeModelMall.calculateFee(duration, VehicleType.CAR)
 
