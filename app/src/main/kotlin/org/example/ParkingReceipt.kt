@@ -9,4 +9,5 @@ class ParkingReceipt(val entryDateTime: LocalDateTime, val exitDateTime: LocalDa
     val duration = Duration.between(entryDateTime, exitDateTime)
 
 
+
 }

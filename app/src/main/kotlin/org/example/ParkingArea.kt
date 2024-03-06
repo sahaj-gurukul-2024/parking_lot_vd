@@ -1,5 +1,6 @@
 package org.example
 
+import java.time.Duration
 import java.time.LocalDateTime
 
 class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
@@ -48,4 +49,8 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         return ParkingReceipt(ticket.entryDateTime, LocalDateTime.now())
     }
 
+    private fun calculateDuration(entryTime: LocalDateTime,exitTime : LocalDateTime): Duration? {
+        return Duration.between(exitTime,entryTime)
+
+    }
 }
