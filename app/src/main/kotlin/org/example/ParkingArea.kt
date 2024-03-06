@@ -38,4 +38,14 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
         }
     }
 
+    fun unPark(ticket: ParkingTicket,vehicleType: String) : ParkingReceipt{
+        for(slot in slots[vehicleType]!!){
+            if(slot.id==ticket.slotId){
+                slot.isOccupied= false
+            }
+        }
+
+        return ParkingReceipt(ticket.entryDateTime, LocalDateTime.now())
+    }
+
 }

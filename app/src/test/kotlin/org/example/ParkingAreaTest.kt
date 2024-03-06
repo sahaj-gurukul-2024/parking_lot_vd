@@ -3,7 +3,11 @@ package org.example
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.time.LocalDateTime
+import java.time.Month
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ParkingAreaTest {
 
@@ -95,6 +99,30 @@ class ParkingAreaTest {
 
         assertEquals(ticketId, parkingTicket.id)
         assertEquals(parkingSlotId, parkingTicket.slotId)
+    }
+
+    @Test
+    fun `Parking Area should update spot once a vehicle is unparked`() {
+        val venue = "stadium"
+        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+
+        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val ticket = parkingArea.park("Motorcycles")
+        parkingArea.unPark(ticket,"Motorcycles")
+
+        assertFalse(parkingArea.slots["Motorcycles"]!!.get(0).isOccupied)
+    }
+
+    @Test
+    fun `Parking Area should generate receipt`(){
+        val venue = "stadium"
+        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+
+        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val ticket = parkingArea.park("Motorcycles")
+        val receipt = parkingArea.unPark(ticket,"Motorcycles")
+        assertTrue(receipt is ParkingReceipt)
+
     }
 
 }
