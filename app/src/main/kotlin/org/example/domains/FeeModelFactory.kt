@@ -1,5 +1,6 @@
-package org.example
+package org.example.domains
 
+import org.example.enums.Venue
 import org.example.feeModels.*
 
 class FeeModelFactory {
@@ -7,7 +8,7 @@ class FeeModelFactory {
         if(venue == Venue.MALL){
             return Mall()
         }
-        else if(venue==Venue.STADIUM){
+        else if(venue== Venue.STADIUM){
             return Stadium()
         }
         return null

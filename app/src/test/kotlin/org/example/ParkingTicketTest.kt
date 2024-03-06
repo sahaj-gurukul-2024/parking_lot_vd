@@ -1,5 +1,6 @@
 package org.example
 
+import org.example.domains.ParkingTicket
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import kotlin.test.assertEquals

@@ -1,5 +1,6 @@
-package org.example
+package org.example.domains
 
+import org.example.enums.VehicleType
 import java.time.Duration
 import java.time.LocalDateTime
 

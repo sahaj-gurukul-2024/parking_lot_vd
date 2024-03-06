@@ -1,4 +1,4 @@
-package org.example.feeModels
+package org.example.enums
 
 enum class Rate {
     HOURLY,

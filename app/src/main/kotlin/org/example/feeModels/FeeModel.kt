@@ -1,6 +1,7 @@
 package org.example.feeModels
 
-import org.example.VehicleType
+import org.example.enums.VehicleType
+import org.example.enums.Rate
 import java.time.Duration
 
 abstract class FeeModel {

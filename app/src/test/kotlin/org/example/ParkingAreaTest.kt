@@ -1,5 +1,8 @@
 package org.example
 
+import org.example.domains.ParkingArea
+import org.example.domains.ParkingReceipt
+import org.example.enums.VehicleType
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -107,7 +110,7 @@ class ParkingAreaTest {
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
         val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
-        parkingArea.unPark(ticket,VehicleType.MOTORCYCLE)
+        parkingArea.unPark(ticket, VehicleType.MOTORCYCLE)
 
         assertFalse(parkingArea.slots[VehicleType.MOTORCYCLE]!![0].isOccupied)
     }
@@ -119,7 +122,7 @@ class ParkingAreaTest {
 
         val parkingArea = ParkingArea(venue, vehicleConfig)
         val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
-        val receipt = parkingArea.unPark(ticket,VehicleType.MOTORCYCLE)
+        val receipt = parkingArea.unPark(ticket, VehicleType.MOTORCYCLE)
         assertTrue(receipt is ParkingReceipt)
 
     }
