@@ -9,9 +9,9 @@ class FeeModelFactory {
         if(venue=="Mall"){
             return Mall()
         }
-        else if(venue=="Stadium"){
-            return Stadium()
-        }
+//        else if(venue=="Stadium"){
+//            return Stadium()
+//        }
         return null
     }
 

@@ -1,5 +1,6 @@
 package org.example
 
+import org.example.feeModels.Rate
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import kotlin.test.assertEquals
@@ -8,17 +9,27 @@ import kotlin.test.assertNotNull
 class FeeModelTest {
 
     @Test
-    fun `Concrete fee model is initialized properly`(){
+    fun `should calculate parking fee for car in mall `(){
         val feeModelFactory = FeeModelFactory()
+        val mallConfiguration = mapOf(
+            VehicleType.CAR to mapOf(0 to Pair(Rate.HOURLY,20)),
+            VehicleType.MOTORCYCLE to mapOf(0 to Pair(Rate.HOURLY,10)),
+            VehicleType.BUS to mapOf(0 to Pair(Rate.HOURLY,50))
+        )
 
         val feeModelMall = feeModelFactory.getFeeModel("Mall")
+        feeModelMall!!.setConfiguration(mallConfiguration)
 
-        assertNotNull(feeModelMall)
+        val duration = Duration.ofHours(2)+ Duration.ofMinutes(30)
+
+        val fee = feeModelMall.calculateFee(duration,VehicleType.CAR)
+
+        assertEquals(60.0,fee)
+
     }
 
     @Test
     fun `Should Calculate fee correctly in mall when duration is given`(){
-
         val feeModelFactory = FeeModelFactory()
 
         val feeModelMall = feeModelFactory.getFeeModel("Mall")
