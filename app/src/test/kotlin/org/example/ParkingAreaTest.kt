@@ -3,12 +3,13 @@ package org.example
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.Month
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-
+import kotlin.time.ExperimentalTime
 class ParkingAreaTest {
 
     @Test
@@ -123,6 +124,19 @@ class ParkingAreaTest {
         val receipt = parkingArea.unPark(ticket,"Motorcycles")
         assertTrue(receipt is ParkingReceipt)
 
+    }
+    @Test
+    fun `Parking area should have current dateTime as entry time`()
+    {
+        val venue = "stadium"
+        val vehicleConfig = mutableMapOf("Motorcycles" to 1)
+
+        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val currentTime = LocalDateTime.now()
+        val registeredEntryTime = parkingArea.getEntryTime()
+        val difference = Duration.between(currentTime,registeredEntryTime).seconds
+
+        assertEquals(0,difference)
     }
 
 }

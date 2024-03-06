@@ -26,9 +26,14 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
     fun park(vehicleType: String): ParkingTicket {
         val slotId = checkAvailability(vehicleType)
         updateSpot(slotId, vehicleType)
-
-        return ParkingTicket(ticketId, slotId, LocalDateTime.now())
+        val entryTime = getEntryTime()
+        return ParkingTicket(ticketId, slotId, entryTime)
     }
+
+    internal fun getEntryTime(): LocalDateTime {
+        return LocalDateTime.now()
+    }
+
 
     private fun updateSpot(slotId: Int, vehicleType: String) {
         if (slotId != 0) {
@@ -51,6 +56,5 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<String, Int>) {
 
     private fun calculateDuration(entryTime: LocalDateTime,exitTime : LocalDateTime): Duration? {
         return Duration.between(exitTime,entryTime)
-
     }
 }

@@ -1,5 +1,7 @@
 package org.example.feeModels
 
+import java.time.Duration
+
 abstract class FeeModel {
-    abstract fun calculateFee(duration: kotlin.time.Duration, vehicleType: String): Double
+    abstract fun calculateFee(duration: Duration, vehicleType: String): Double
 }
