@@ -4,18 +4,13 @@ import org.example.VehicleType
 import java.time.Duration
 import kotlin.math.ceil
 
-class Mall() : FeeModel() {
+class Mall: FeeModel() {
 
     private var feeStructure: Map<VehicleType,Map<Int,Pair<Rate,Int>>> = mapOf()
-
-//    val mallConfiguration = mapOf(
-//        VehicleType.CAR to mapOf(0 to 20),
-//        VehicleType.MOTORCYCLE to mapOf(0 to 10),
-//        VehicleType.BUS to mapOf(0 to 50)
-//    )
     override fun setConfiguration(mallConfiguration: Map<VehicleType,Map<Int,Pair<Rate,Int>>>) {
         feeStructure= mallConfiguration
     }
+
     override fun calculateFee(duration: Duration, vehicleType: VehicleType): Double {
         val parkingMinutes = duration.toMinutes()
         val feeIntervals = feeStructure[vehicleType]!!
@@ -28,7 +23,7 @@ class Mall() : FeeModel() {
                     totalFee += pairs.second*(remainingHours-interval.toDouble())
                     remainingHours = interval.toDouble()
                 }
-                else{
+                else if(pairs.first==Rate.FLAT){
                     totalFee += pairs.second
                     remainingHours = interval.toDouble()
                 }

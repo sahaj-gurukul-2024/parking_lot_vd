@@ -1,17 +1,15 @@
 package org.example
 
-import org.example.feeModels.FeeModel
-import org.example.feeModels.Mall
-import org.example.feeModels.Stadium
+import org.example.feeModels.*
 
 class FeeModelFactory {
-    fun getFeeModel(venue: String): FeeModel? {
-        if(venue=="Mall"){
+    fun getFeeModel(venue: Venue): FeeModel? {
+        if(venue == Venue.MALL){
             return Mall()
         }
-//        else if(venue=="Stadium"){
-//            return Stadium()
-//        }
+        else if(venue==Venue.STADIUM){
+            return Stadium()
+        }
         return null
     }
 
