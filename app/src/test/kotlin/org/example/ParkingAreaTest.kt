@@ -2,7 +2,9 @@ package org.example
 
 import org.example.domains.ParkingArea
 import org.example.domains.ParkingReceipt
+import org.example.enums.Rate
 import org.example.enums.VehicleType
+import org.example.enums.Venue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -11,24 +13,23 @@ import java.time.LocalDateTime
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-class ParkingAreaTest {
 
+class ParkingAreaTest {
     @Test
     fun `Parking Area is initialized properly`() {
-        val venue = "stadium"
         val vehicleConfig = mapOf<VehicleType, Int>()
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
-
-        assertEquals(venue, parkingArea.venue)
+        assertEquals(Venue.STADIUM, parkingArea.venue)
     }
 
     @Test
     fun `Parking Area should have correct slot numbers `() {
-        val venue = "stadium"
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 2, VehicleType.CAR to 0)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         assertEquals(vehicleConfig[VehicleType.CAR], parkingArea.slots[VehicleType.CAR]!!.size)
         assertEquals(vehicleConfig[VehicleType.MOTORCYCLE], parkingArea.slots[VehicleType.MOTORCYCLE]!!.size)
@@ -36,9 +37,10 @@ class ParkingAreaTest {
 
     @Test
     fun `Parking Area should allow vehicle if slot available`() {
-        val venue = "stadium"
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 2)
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         assertDoesNotThrow {
             parkingArea.park(VehicleType.MOTORCYCLE)
@@ -47,10 +49,10 @@ class ParkingAreaTest {
 
     @Test
     fun `Parking Area should not allow vehicle if slot not available`() {
-        val venue = "stadium"
         val vehicleConfig = mutableMapOf(VehicleType.CAR to 0)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         assertThrows<Exception> {
             parkingArea.park(VehicleType.CAR)
@@ -59,10 +61,10 @@ class ParkingAreaTest {
 
     @Test
     fun `Parking Area should update spot once a vehicle is parked`() {
-        val venue = "stadium"
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         assertDoesNotThrow { parkingArea.park(VehicleType.MOTORCYCLE) }
         assertDoesNotThrow { parkingArea.park(VehicleType.MOTORCYCLE) }
@@ -71,11 +73,11 @@ class ParkingAreaTest {
     }
 
     @Test
-    fun `Parking Area should generate ticket properly`(){
-        val venue = "stadium"
+    fun `Parking Area should generate ticket properly`() {
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         val parkingTicket = parkingArea.park(VehicleType.MOTORCYCLE)
 
@@ -87,11 +89,11 @@ class ParkingAreaTest {
     }
 
     @Test
-    fun `Parking Area should generate proper ticket id`(){
-        val venue = "stadium"
+    fun `Parking Area should generate proper ticket id`() {
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 3)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
 
         parkingArea.park(VehicleType.MOTORCYCLE)
         val parkingTicket = parkingArea.park(VehicleType.MOTORCYCLE)
@@ -105,10 +107,9 @@ class ParkingAreaTest {
 
     @Test
     fun `Parking Area should update spot once a vehicle is unparked`() {
-        val venue = "stadium"
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
-
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
         val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
         parkingArea.unPark(ticket, VehicleType.MOTORCYCLE)
 
@@ -116,28 +117,38 @@ class ParkingAreaTest {
     }
 
     @Test
-    fun `Parking Area should generate receipt`(){
-        val venue = "stadium"
+    fun `Parking Area should generate receipt`() {
         val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
-
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
         val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
         val receipt = parkingArea.unPark(ticket, VehicleType.MOTORCYCLE)
         assertTrue(receipt is ParkingReceipt)
 
     }
-    @Test
-    fun `Parking area should have current dateTime as entry time`()
-    {
-        val venue = "stadium"
-        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
 
-        val parkingArea = ParkingArea(venue, vehicleConfig)
+    @Test
+    fun `Parking area should have current dateTime as entry time`() {
+        val vehicleConfig = mutableMapOf(VehicleType.MOTORCYCLE to 1)
+        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+        val parkingArea = ParkingArea(Venue.STADIUM, vehicleConfig, feeStructure)
         val currentTime = LocalDateTime.now()
         val registeredEntryTime = parkingArea.getEntryTime()
-        val difference = Duration.between(currentTime,registeredEntryTime).seconds
+        val difference = Duration.between(currentTime, registeredEntryTime).seconds
 
-        assertEquals(0,difference)
+        assertEquals(0, difference)
     }
 
+//    @Test
+//    fun `Unparking should generate receipt with fees`() {
+//        val parkingSlotConfiguration = mutableMapOf(VehicleType.MOTORCYCLE to 1)
+//        val feeStructure = mapOf(VehicleType.MOTORCYCLE to mapOf(12 to Pair(Rate.HOURLY, 100)))
+//        val parkingArea = ParkingArea(Venue.STADIUM, parkingSlotConfiguration, feeStructure)
+//
+//        val ticket = parkingArea.park(VehicleType.MOTORCYCLE)
+//        val receipt = parkingArea.unPark(ticket, VehicleType.MOTORCYCLE)
+//
+//        assertEquals()
+//
+//    }
 }

@@ -1,19 +1,25 @@
 package org.example.domains
 
+import org.example.enums.Rate
 import org.example.enums.VehicleType
+import org.example.enums.Venue
+import org.example.feeModels.FeeModel
 import java.time.Duration
 import java.time.LocalDateTime
 
-class ParkingArea(internal val venue: String, vehicleConfig: Map<VehicleType, Int>) {
+class ParkingArea(internal val venue: Venue, vehicleConfig: Map<VehicleType, Int>, feeStructure: Map<VehicleType, Map<Int, Pair<Rate, Int>>>) {
     val slots: MutableMap<VehicleType, List<Slot>> = mutableMapOf()
     private var ticketId: Int = 0
-
+    private val feeModelFactory = FeeModelFactory()
+    private var feeModel:FeeModel
     init {
         for ((vehicleType, slotCount) in vehicleConfig) {
             slots[vehicleType] = List(slotCount) {
                 Slot(it + 1)
             }
         }
+        feeModel = feeModelFactory.getFeeModel(venue)
+        feeModel.setConfiguration(feeStructure)
     }
 
     private fun checkAvailability(vehicleType: VehicleType): Int {
@@ -52,10 +58,13 @@ class ParkingArea(internal val venue: String, vehicleConfig: Map<VehicleType, In
                 slot.isOccupied = false
             }
         }
-        return ParkingReceipt(ticket.entryDateTime, LocalDateTime.now())
+        val exitTime = LocalDateTime.now()
+        val duration = calculateDuration(ticket.entryDateTime,exitTime)
+
+        return ParkingReceipt(ticket.entryDateTime,ticketId,exitTime,feeModel.calculateFee(duration,vehicleType))
     }
 
-    private fun calculateDuration(entryTime: LocalDateTime, exitTime: LocalDateTime): Duration? {
+    private fun calculateDuration(entryTime: LocalDateTime, exitTime: LocalDateTime): Duration {
         return Duration.between(exitTime, entryTime)
     }
 }

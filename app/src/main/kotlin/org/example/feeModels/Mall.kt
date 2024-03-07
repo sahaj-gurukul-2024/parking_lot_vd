@@ -9,9 +9,14 @@ import kotlin.math.ceil
 class Mall : FeeModel() {
 
     private var feeStructure: Map<VehicleType, Map<Int, Pair<Rate, Int>>> = mapOf()
+//    private var feeStructure2: Map<VehicleType, Map<Int, Int>> = mapOf()
     override fun setConfiguration(mallConfiguration: Map<VehicleType, Map<Int, Pair<Rate, Int>>>) {
         feeStructure = mallConfiguration
     }
+
+//    fun setConfiguration(mallConfiguration: Map<VehicleType, Map<Int, Int>>) {
+//        feeStructure2 = mallConfiguration
+//    }
 
     override fun calculateFee(duration: Duration, vehicleType: VehicleType): Double {
         val parkingMinutes = duration.toMinutes()
@@ -33,4 +38,18 @@ class Mall : FeeModel() {
         }
         return totalFee
     }
+
+//    fun calculateFare(duration: kotlin.time.Duration, vehicle: VehicleType): Int {
+//        val feeIntervals = feeStructure2[vehicle] ?: throw ParkingException("Fee interval missing")
+//        var totalFee = 0
+//        for(interval in feeIntervals)
+//        {
+//            if(interval.key== Int.MAX_VALUE)
+//            {
+//                val hourlyFeeCalculator = HourlyFeeCalculator()
+//                totalFee +=
+//
+//            }
+//        }
+//    }
 }

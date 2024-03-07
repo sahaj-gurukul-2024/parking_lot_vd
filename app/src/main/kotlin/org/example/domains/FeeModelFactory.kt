@@ -4,14 +4,15 @@ import org.example.enums.Venue
 import org.example.feeModels.*
 
 class FeeModelFactory {
-    fun getFeeModel(venue: Venue): FeeModel? {
-        if(venue == Venue.MALL){
-            return Mall()
+    fun getFeeModel(venue: Venue): FeeModel{
+        return when (venue) {
+            Venue.MALL -> {
+                Mall()
+            }
+            Venue.STADIUM -> {
+                Stadium()
+            }
         }
-        else if(venue== Venue.STADIUM){
-            return Stadium()
-        }
-        return null
     }
 
 }

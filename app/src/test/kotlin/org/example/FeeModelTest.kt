@@ -13,6 +13,7 @@ import kotlin.test.assertEquals
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
+
 class FeeModelTest {
     @Test
     fun `should calculate parking cost based on flat fee rate`() {
@@ -25,12 +26,11 @@ class FeeModelTest {
 
         val parkingFees = flatFeeCalculator.calculateFare(VehicleType.CAR)
 
-        assertEquals(10,parkingFees)
+        assertEquals(10, parkingFees)
     }
 
     @Test
-    fun `should calculate parking cost based on hourly fee rate`()
-    {
+    fun `should calculate parking cost based on hourly fee rate`() {
         val hourlyFeeCalculator = HourlyFeeCalculator(
             mapOf(
                 VehicleType.CAR to 10,
@@ -40,8 +40,23 @@ class FeeModelTest {
 
         val parkingFees = hourlyFeeCalculator.calculateFare(VehicleType.CAR)
 
-        assertEquals(30,parkingFees)
+        assertEquals(30, parkingFees)
     }
+
+//    @Test
+//    fun `should calculate parking fare for car being parked in mall`() {
+//        val feeModelMall = Mall()
+//        val mallConfiguration = mapOf(
+//            VehicleType.CAR to mapOf(MAX_VALUE to 20),
+//            VehicleType.MOTORCYCLE to mapOf(MAX_VALUE to 10),
+//            VehicleType.BUS to mapOf(MAX_VALUE to 50)
+//        )
+//        feeModelMall.setConfiguration(mallConfiguration)
+//
+//        val parkingFee = feeModelMall.calculateFare((2.5).toDuration(DurationUnit.HOURS),VehicleType.MOTORCYCLE)
+//
+//        assertEquals(expected = 10, actual = parkingFee)
+//    }
 
     @Test
     fun `should calculate parking fee for car being parked in mall`() {
@@ -52,8 +67,8 @@ class FeeModelTest {
             VehicleType.BUS to mapOf(0 to Pair(Rate.HOURLY, 50))
         )
 
-        val feeModelMall = feeModelFactory.getFeeModel(Venue.MALL)
-        feeModelMall!!.setConfiguration(mallConfiguration)
+        val feeModelMall = feeModelFactory.getFeeModel(Venue.MALL) ?: throw ParkingException("Fee model is unavailable")
+        feeModelMall.setConfiguration(mallConfiguration)
         val duration = Duration.ofHours(2) + Duration.ofMinutes(30)
         val fee = feeModelMall.calculateFee(duration, VehicleType.CAR)
 
@@ -78,7 +93,7 @@ class FeeModelTest {
         )
 
         val feeModelMall =
-            feeModelFactory.getFeeModel(Venue.STADIUM) ?: throw ParkingException("Fee model is unavailable")
+            feeModelFactory.getFeeModel(Venue.STADIUM)
         feeModelMall.setConfiguration(mallConfiguration)
         val duration = Duration.ofHours(14) + Duration.ofMinutes(30)
         val fee = feeModelMall.calculateFee(duration, VehicleType.CAR)
