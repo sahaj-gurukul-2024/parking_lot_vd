@@ -6,24 +6,41 @@ import org.example.enums.Rate
 import org.example.enums.VehicleType
 import org.example.enums.Venue
 import org.example.feeModels.FlatFeeCalculator
+import org.example.feeModels.HourlyFeeCalculator
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import kotlin.test.assertEquals
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class FeeModelTest {
     @Test
-    fun `should return flat fee rate if parking duration is given`() {
+    fun `should calculate parking cost based on flat fee rate`() {
         val flatFeeCalculator = FlatFeeCalculator(
             mapOf(
                 VehicleType.CAR to 10,
                 VehicleType.BUS to 20
             )
         )
+
         val parkingFees = flatFeeCalculator.calculateFare(VehicleType.CAR)
 
         assertEquals(10,parkingFees)
+    }
 
+    @Test
+    fun `should calculate parking cost based on hourly fee rate`()
+    {
+        val hourlyFeeCalculator = HourlyFeeCalculator(
+            mapOf(
+                VehicleType.CAR to 10,
+                VehicleType.BUS to 20
+            ), duration = 2.5.toDuration(DurationUnit.HOURS)
+        )
 
+        val parkingFees = hourlyFeeCalculator.calculateFare(VehicleType.CAR)
+
+        assertEquals(30,parkingFees)
     }
 
     @Test
